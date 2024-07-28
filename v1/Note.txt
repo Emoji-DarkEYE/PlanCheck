@@ -1,0 +1,63 @@
+
+1. **`document.addEventListener('DOMContentLoaded', () => {...})`:**
+   - این بخش اطمینان می‌دهد که کد جاوا اسکریپت تنها پس از بارگذاری کامل محتوای صفحه اجرا شود.
+
+2. **`const todoForm = document.getElementById('todo-form');`:**
+   - این دستور فرم اضافه کردن کارها را از صفحه وب می‌گیرد.
+
+3. **`const todoInput = document.getElementById('todo-input');`:**
+   - این دستور ورودی متنی برای اضافه کردن کار جدید را از صفحه وب می‌گیرد.
+
+4. **`const todoList = document.getElementById('todo-list');`:**
+   - این دستور عنصر ul که لیست کارها را نمایش می‌دهد، می‌گیرد.
+
+5. **`todoForm.addEventListener('submit', addTodo);`:**
+   - این بخش می‌گوید که وقتی فرم ارسال می‌شود، تابع addTodo را اجرا کند.
+
+6. **`function addTodo(event) {...}`:**
+   - این تابع وقتی فرم ارسال می‌شود، اجرا می‌شود.
+
+7. **`event.preventDefault();`:**
+   - این دستور از رفتار پیش‌فرض فرم که صفحه را رفرش می‌کند، جلوگیری می‌کند.
+
+8. **`const newTodoText = todoInput.value.trim();`:**
+   - این خط متن وارد شده توسط کاربر را می‌گیرد و فضای خالی اول و آخر آن را حذف می‌کند.
+
+9. **`if (newTodoText === '') {...}`:**
+   - این شرط بررسی می‌کند که آیا ورودی خالی است یا نه؛ اگر خالی بود، تابع متوقف می‌شود.
+
+10. **`const li = document.createElement('li');`:**
+    - این دستور یک عنصر لیست جدید (li) ایجاد می‌کند.
+
+11. **`li.textContent = newTodoText;`:**
+    - این خط متن کار جدید را به عنصر li اضافه می‌کند.
+
+12. **`const deleteButton = document.createElement('button');`:**
+    - این دستور یک دکمه جدید ایجاد می‌کند.
+
+13. **`deleteButton.textContent = 'Delete';`:**
+    - این خط متن "Delete" را به دکمه اضافه می‌کند.
+
+14. **`deleteButton.classList.add('delete-btn');`:**
+    - این دستور یک کلاس CSS به نام 'delete-btn' به دکمه اضافه می‌کند.
+
+15. **`deleteButton.addEventListener('click', () => { li.remove(); });`:**
+    - وقتی روی دکمه کلیک می‌شود، عنصر li مربوطه از لیست حذف می‌شود.
+
+16. **`li.appendChild(deleteButton);`:**
+    - دکمه حذف را به عنصر لیست li اضافه می‌کند.
+
+17. **`todoList.appendChild(li);`:**
+    - عنصر لیست (li) جدید را به لیست ul اضافه می‌کند.
+
+18. **`todoInput.value = '';`:**
+    - بعد از اضافه کردن کار جدید، ورودی متنی را خالی می‌کند.
+
+19. **`todoList.addEventListener('click', (event) => {...});`:**
+    - این بخش می‌گوید که وقتی روی یکی از کارهای لیست کلیک می‌شود، این اتفاق می‌افتد.
+
+20. **`if (event.target.tagName === 'LI') {...}`:**
+    - بررسی می‌کند که آیا روی عنصر لیست (li) کلیک شده است یا نه.
+
+21. **`event.target.classList.toggle('completed');`:**
+    - این خط کلاس 'completed' را به کار اضافه یا حذف می‌کند، که معمولا برای خط زدن متن استفاده می‌شود تا نشان دهد کار انجام شده است.

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="todo-container">
+        <h2></h2>
+        <form id="todo-form">
+            <input type="text" id="todo-input" placeholder="Add a new task">
+            <button type="submit">Add</button>
+        </form>
+        <ul id="todo-list"></ul>
+        <button id="check-all">Check All</button>
+        <button id="delete-all">Delete All</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlackCheck</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .todo-container {
+            background-color: #444;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        form input {
+            width: 70%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        form button {
+            padding: 10px 15px;
+            border: none;
+            background-color: #e74c3c;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #555;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        li.completed span {
+            text-decoration: line-through;
+        }
+        li button {
+            background-color: transparent;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+        }
+        li input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 10px;
+        }
+        #check-all, #delete-all {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #e74c3c;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        @media (max-width: 600px) {
+            .todo-container {
+                width: 90%;
+            }
+        }
+        @media (min-width: 601px) and (max-width: 1024px) {
+            .todo-container {
+                width: 60%;
+            }
+        }
+        @media (min-width: 1025px) {
+            .todo-container {
+                width: 40%;
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="todo-container">
+        <h2></h2>
+        <form id="todo-form">
+            <input type="text" id="todo-input" placeholder="Add a new task">
+            <button type="submit">Add</button>
+        </form>
+        <ul id="todo-list"></ul>
+        <button id="check-all">Check All</button>
+        <button id="delete-all">Delete All</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const todoForm = document.getElementById('todo-form');
+            const todoInput = document.getElementById('todo-input');
+            const todoList = document.getElementById('todo-list');
+            const checkAllButton = document.getElementById('check-all');
+            const deleteAllButton = document.getElementById('delete-all');
+            const title = document.querySelector('.todo-container h2');
+
+            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const today = new Date();
+            const dayName = daysOfWeek[today.getDay()];
+            const date = today.toLocaleDateString();
+            title.textContent = `${dayName}, ${date}`;
+
+            loadTasks();
+
+            todoForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                addTodoItem(todoInput.value);
+                todoInput.value = '';
+            });
+
+            checkAllButton.addEventListener('click', () => {
+                const allTasks = todoList.querySelectorAll('input[type="checkbox"]');
+                const allChecked = Array.from(allTasks).every(task => task.checked);
+                allTasks.forEach(task => {
+                    task.checked = !allChecked;
+                    toggleTaskCompletion(task);
+                });
+                saveTasks();
+            });
+
+            deleteAllButton.addEventListener('click', () => {
+                todoList.innerHTML = '';
+                saveTasks();
+            });
+
+            function addTodoItem(task) {
+                if (task.trim() === '') return;
+
+                const li = document.createElement('li');
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.addEventListener('change', () => {
+                    toggleTaskCompletion(checkbox);
+                    saveTasks();
+                });
+
+                const span = document.createElement('span');
+                span.textContent = task;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                deleteButton.addEventListener('click', () => {
+                    li.remove();
+                    saveTasks();
+                });
+
+                li.appendChild(checkbox);
+                li.appendChild(span);
+                li.appendChild(deleteButton);
+
+                todoList.appendChild(li);
+                saveTasks();
+            }
+
+            function toggleTaskCompletion(checkbox) {
+                if (checkbox.checked) {
+                    checkbox.parentElement.classList.add('completed');
+                } else {
+                    checkbox.parentElement.classList.remove('completed');
+                }
+            }
+
+            function saveTasks() {
+                const tasks = [];
+                todoList.querySelectorAll('li').forEach(li => {
+                    tasks.push({
+                        text: li.querySelector('span').textContent,
+                        completed: li.querySelector('input[type="checkbox"]').checked
+                    });
+                });
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                localStorage.setItem('lastSaveDate', new Date().toLocaleDateString());
+            }
+
+            function loadTasks() {
+                const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+                tasks.forEach(task => {
+                    addTodoItem(task.text);
+                    const li = todoList.lastChild;
+                    const checkbox = li.querySelector('input[type="checkbox"]');
+                    checkbox.checked = task.completed;
+                    toggleTaskCompletion(checkbox);
+                });
+
+                const lastSaveDate = localStorage.getItem('lastSaveDate');
+                if (lastSaveDate && lastSaveDate !== new Date().toLocaleDateString()) {
+                    exportToExcel();
+                    localStorage.removeItem('tasks');
+                }
+            }
+
+            function exportToExcel() {
+                const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+                if (tasks.length === 0) return;
+
+                const data = tasks.map(task => ({
+                    'Task': task.text,
+                    'Completed': task.completed ? 'Yes' : 'No'
+                }));
+
+                const ws = XLSX.utils.json_to_sheet(data);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Tasks');
+
+                const fileName = `Tasks_${new Date().toLocaleDateString().replace(/\//g, '-')}.xlsx`;
+                XLSX.writeFile(wb, fileName);
+            }
+
+            const intervalId = setInterval(() => {
+                const now = new Date();
+                if (now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() === 0) {
+                    exportToExcel();
+                    localStorage.removeItem('tasks');
+                    todoList.innerHTML = '';
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
