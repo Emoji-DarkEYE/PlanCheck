@@ -51,4 +51,4 @@ Contact
 
 For any questions or feedback, please contact us at darkeye25emoji@gmail.com.
 
-Feel free to replace `yourusername` with your actual GitHub username and add a screenshot image of your application where indicated.
+Created by `Emoji-DarkEYE` 
