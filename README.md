@@ -4,6 +4,8 @@
 
 PlanCheck is a simple and user-friendly To-Do List web application designed to help users manage their daily tasks effectively. With an intuitive interface and essential features, it aims to make task management easy and efficient.
 
+Created by `Emoji-DarkEYE` 
+
 ## Features
 
 - **Add Tasks:** Easily add new tasks to your to-do list.
