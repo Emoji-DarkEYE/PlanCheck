@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Sahel', sans-serif;
+            direction: rtl;
+            text-align: right;
             background-color: #333;
             color: #fff;
             margin: 0;
@@ -44,7 +47,7 @@
             color: #fff;
             cursor: pointer;
             border-radius: 5px;
-            margin-left: 10px;
+            margin-right: 10px;
         }
         ul {
             list-style: none;
@@ -105,12 +108,12 @@
     <div class="todo-container">
         <h2></h2>
         <form id="todo-form">
-            <input type="text" id="todo-input" placeholder="Add a new task">
-            <button type="submit">Add</button>
+            <input type="text" id="todo-input" placeholder="یک کار جدید وارد کن">
+            <button type="submit">افزودن</button>
         </form>
         <ul id="todo-list"></ul>
-        <button id="check-all">Check All</button>
-        <button id="delete-all">Delete All</button>
+        <button id="check-all">همه انجام شد!</button>
+        <button id="delete-all">حذف همگی</button>
     </div>
 
     <script>
@@ -122,7 +125,7 @@
             const deleteAllButton = document.getElementById('delete-all');
             const title = document.querySelector('.todo-container h2');
 
-            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const daysOfWeek = ['یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'];
             const today = new Date();
             const dayName = daysOfWeek[today.getDay()];
             const date = today.toLocaleDateString();
